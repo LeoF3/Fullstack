@@ -4,15 +4,6 @@ const Sco = require('../models/score');
 
 const addScore = async (punto,dificultad,usuario) => {
 
-   // let existUser = await Sco.findOne({ email: email });
-  //  console.log(existUser);
- //   if(!existUser) {
-
-   /*     const cryptoPass = require('crypto')
-        .createHash('sha256')
-        .update(password)
-        .digest('hex');
-     */   
         const sco = new Sco(
             {              
                 punto: punto,
@@ -27,48 +18,18 @@ const addScore = async (punto,dificultad,usuario) => {
         console.log(scor);
         return { scor }; 
 
-  //  }else{
-  //      return false;
- //   }
 }   
-/*
-const getAllUsers = async (limit,offset) => {
 
-    const users = await Usr.find({}).limit(limit).skip(offset);
+const getAllScore = async (limit,offset) => {
 
-    return users;
+    const scores = await Sco.find({}).limit(limit).skip(offset);
+
+    return scores;
 }
 
-const getUser = async(id) => {
-
-    const user = await Usr.findById(id);
-
-    // await Usr.findOne({ _id: req.params.id })
-
-    return user;
+const getScore = async(limit,user) => {
+    const score = await Sco.find({ "usuario":user }).limit(limit);
+    return score;
 }
 
-const editUser = async(user) => {
-
-    const result = await Usr.findByIdAndUpdate(user._id,user,{new:true});
-
-    return result;
-}
-
-const editRoles = async(roles,id) => {
-
-    const result = await Usr.findByIdAndUpdate(id,{$set:{roles:roles}},{new:true});
-
-    return result;
-}
-
-const deleteUser = async(id) => {
-
-    const result = await Usr.findByIdAndDelete(id);
-
-    return result;
-}
-
-module.exports = { addUser, getAllUsers, getUser, editUser, editRoles, deleteUser }
-*/
-module.exports = { addScore }
+module.exports = { addScore , getAllScore, getScore}

@@ -1,4 +1,3 @@
-
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -15,6 +14,7 @@ app.engine('html', require('ejs').renderFile);
 
 //importaciones
 const UsrController = require('./controllers/user');
+const ScoController = require('./controllers/score');
 
 //pagina de login
 app.get("/login", (req,res) => {
@@ -37,15 +37,61 @@ app.get("/usuario/:id",async (req,res) =>{
     }
 });
 
-//obtiene el top 10 de puntos
-app.get("/toppuntos",async (req,res) =>{
+//obtiene todos los puntos
+app.get("/obtienescore",async (req,res) =>{
+
+  let limit = req.query.limit;
+  let offset = req.query.offset;
+
+  try{
+      const results = await ScoController.getAllScore(limit,offset);
+      res.status(200).json(results);
+
+  }catch(error){
+      res.status(500).send("Error. No se pudo obtener score.")
+  }
 
 });
 
-//obtiene el top 10 de puntos
-app.get("/score",async (req,res) =>{
+//obtiene los puntos del usuario
+app.post("/obtienemiscore",async (req,res) =>{
+
+  let limit = req.body.limit;
+  let userid = req.body.userid;
+  
+
+  try{
+    user = await UsrController.getUser(userid);
+      const results = await ScoController.getScore(limit,user);
+      res.status(200).json(results);
+
+  }catch(error){
+      res.status(500).send("Error. No se pudo obtener mi score.")
+  }
 
 });
+
+
+//inserta el score
+app.get("/creascore",async (req,res) =>{
+  let punto = req.body.punto;
+  let dificultad = req.body.dificultad;
+  let usuarioid = req.body.usuarioid;
+
+  try{
+    user = await UsrController.getUser(usuarioid);
+    const result = await ScoController.addScore(punto,dificultad,user);
+    if(result){
+      res.status(201).send("score creado correctamente"); // 201
+    }else{
+      res.status(409).send("Error al intentar guardar el score"); // 409
+    }  
+  }catch(error){
+    res.status(500).send("Error interno."); //500
+  }  
+});
+
+
 
 // Creo un nuevo usuario
 app.post("/users",async (req,res) =>{
