@@ -39,13 +39,12 @@ app.get("/usuario/:id",async (req,res) =>{
 
 //obtiene el top 10 de puntos
 app.get("/toppuntos",async (req,res) =>{
-    let userId =  req.params.id;
-    try{
-      user = await UsrController.getUser(userId);
-      res.status(200).json(user);
-    }catch(error){
-      res.status(500).send("Error");
-    }
+
+});
+
+//obtiene el top 10 de puntos
+app.get("/score",async (req,res) =>{
+
 });
 
 // Creo un nuevo usuario
