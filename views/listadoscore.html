@@ -1,0 +1,97 @@
+<html>
+<head>
+    <h1>Top 10 tus puntajes sudoku game</h1>
+    <link type="text/css" rel="stylesheet" href="/views/sudoku.css">
+</head>
+<form id="formulario" action="reemplazo" method="post">
+    <body>
+        <div id="presentacion" name="presentacion"></div>
+        <div id="general"> </div>
+        <script>
+            const armaVar = () => {
+                let paths = window.location.search;
+                paths = paths.replaceAll('%20', ' ');
+                paths = paths.split("=");
+                paths = paths[paths.length - 1];
+                const paracrea = document.createElement("p");
+                const crea = document.getElementById("presentacion");
+                const nodecrea = document.createTextNode(paths);
+                paracrea.appendChild(nodecrea);
+                crea.appendChild(paracrea);
+            }
+            fetch('http://localhost:5000/obtienescore?limit=10')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    data.forEach(element => {
+                        generaInputSudoku(element, true);
+                    })
+                }
+                )
+                .catch(err => console.log('Solicitud fallida', err));
+
+            const generaInputSudoku = (registro, lectura) => {
+                const label = document.createElement("label");
+                const node = document.createTextNode("Puntos: ");
+                label.appendChild(node);
+
+                const label2 = document.createElement("label");
+                const node2 = document.createTextNode("Fecha de Juego: ");
+                label2.appendChild(node2);
+
+                const label3 = document.createElement("label");
+                const node3 = document.createTextNode("Dificultad Sudoku: ");
+                label3.appendChild(node3);
+
+                const SudokuR = document.createElement("label");
+                const node5 = document.createTextNode(registro.punto);
+                SudokuR.appendChild(node5);
+                SudokuR.id = "SudokuR";
+                SudokuR.name = "SudokuR";
+
+                const ISudoku = document.createElement("label");
+                const node4 = document.createTextNode(registro.createdAt);
+                ISudoku.appendChild(node4);
+                ISudoku.id = "ISudoku";
+                ISudoku.name = "ISudoku";
+                ISudoku.value = registro.usuario;
+
+                const SudokuA = document.createElement("label");
+                const node6 = document.createTextNode(registro.dificultad);
+                SudokuA.appendChild(node6);
+                SudokuA.id = "SudokuA";
+                SudokuA.name = "SudokuA";
+
+                const resu = document.getElementById("general");
+                resu.className = "grid-container3";
+                const resu2 = document.createElement("div");
+                resu2.className = "grid-item-editable";
+                const resu3 = document.createElement("div");
+                resu3.className = "grid-item-editable";
+                const resu4 = document.createElement("div");
+                resu4.className = "grid-item-editable";
+                resu2.appendChild(label);
+                resu2.appendChild(SudokuR);
+
+                resu3.appendChild(label2);
+                resu3.appendChild(ISudoku);
+
+                resu4.appendChild(label3);
+                resu4.appendChild(SudokuA);
+                resu.appendChild(resu2);
+                resu.appendChild(resu3);
+                resu.appendChild(resu4);
+            }
+
+            const salir = () => {
+                document.getElementById("formulario").action = "login?var1=Gracias por jugar!!";
+                document.getElementById("formulario").submit();
+            }
+        </script>
+        <div>
+            <button type="button" class="botones" name="btn2" id="btn" onclick="salir()">Ir a Login</button>
+        </div>
+    </body>
+</form>
+</html>

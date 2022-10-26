@@ -1,0 +1,94 @@
+<html>
+<head>
+<h1>Creacion de usuario sudoku game</h1>
+</head> 
+<body>
+<form id="formulario" action="reemplazo" method="get"> 
+    <div id="presentacion" name="presentacion"></div> 
+    <div id="general">
+
+    </div>
+
+        <script>
+            const armaVar =() => {
+                let paths = window.location.search;
+                paths= paths.replace('%20', ' ');   
+                paths= paths.replace('%40', '@'); 
+
+                paths = paths.split("=");
+                paths = paths[paths.length-1];
+                const paracrea = document.createElement("p");
+                const crea= document.getElementById("presentacion");
+                const nodecrea = document.createTextNode(paths);
+                paracrea.appendChild(nodecrea);
+                crea.appendChild(paracrea);
+
+                
+}
+                 const generaInput = () =>{
+                    const label = document.createElement("label");
+                    const node  = document.createTextNode("email");
+                    label.appendChild(node);
+
+                    const label2 = document.createElement("label");
+                    const node2  = document.createTextNode("Pass");
+                    label2.appendChild(node2);
+
+                    const email = document.createElement("input");
+                    email.id="email";
+                    email.name= "email";
+                    const pass = document.createElement("input");
+                    pass.id="pass";
+                    const resu = document.getElementById("general");
+                    const resu2 = document.getElementById("general");
+
+                    resu.appendChild(label);
+                    resu.appendChild(email);
+
+                    resu2.appendChild(label2);
+                    resu2.appendChild(pass);
+                }   
+                generaInput();
+                const crearUsu = () =>{
+
+                    const usu= document.getElementById("email").value;
+                    const pa= document.getElementById("pass").value;
+                    
+                    const BodyJ =  JSON.stringify({ "email": usu, "pass": pa });
+
+ 
+                    fetch('http://localhost:5000/users',
+                    {method: "POST",
+                    headers: {'Content-Type': 'application/json'},
+                    body: BodyJ
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+
+    let accion= document.getElementById("formulario").action;
+    accion = accion.replace("reemplazo", data);
+    document.getElementById("formulario").action = accion;
+    document.getElementById("formulario").submit();
+                    }
+                    )
+                    .catch(err => console.log('Solicitud fallida', err));   
+                }
+
+const salir =() =>{
+    if (confirm("Realmente quiere volver al login?") == true) {
+    alert("Saliendo..");
+    document.getElementById("formulario").action = "login";
+    document.getElementById("formulario").submit();
+    }else{
+    alert("Seguir creando usuario");
+    }
+}
+armaVar();
+     </script>
+
+            <button  type="button" name="btn" id="btn" onclick ="crearUsu()">Crear Usuario</button>  
+            <button  type="button" name="btn1" id="btn" onclick ="salir()">Volver a Login</button>  
+        </form>   
+    </body>
+
+</html>

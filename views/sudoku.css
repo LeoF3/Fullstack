@@ -1,73 +1,218 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 
 hr {
-    width: 500px;
+  width: 500px;
 }
 
 #errors {
-    color: coral;
+  color: coral;
 }
 
 #board {
-    width: 450px;
-    height: 450px;
-
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
+  width: 450px;
+  height: 250px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .tile {
-    width: 48px; 
-    height: 48px;
-    border: 1px solid lightgray;
+  width: 48px;
+  height: 28px;
+  border: 1px solid lightgray;
 
-    /* Text */
-    font-size: 20px;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* Text */
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #digits {
-    width: 450px;
-    height: 50px;
+  width: 450px;
+  height: 50px;
 
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .number {
-    width: 44px; 
-    height: 44px;
-    border: 1px solid black;
-    margin: 2px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid black;
+  margin: 2px;
 
-    /* Text */
-    font-size: 20px;
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  /* Text */
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .number-selected {
-    background-color: gray;
+  background-color: gray;
 }
 
 .tile-start {
-    background-color: whitesmoke;
+  background-color: whitesmoke;
 }
 
 .horizontal-line {
-    border-bottom: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
 .vertical-line {
-    border-right: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.botonesverde {
+  display: inline-block;
+  padding: 5px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: rgb(8, 141, 48);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px #999;
+
+
+}
+
+.botones {
+  display: inline-block;
+  padding: 5px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #584cc7;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px #999;
+
+
+}
+
+input[type=radio]:active {
+  background-color: #584cc7;
+  transform: translateY(4px);
+}
+
+.undir:active {
+  background-color: #584cc7;
+  box-shadow: 0 4px #666;
+  transform: translateY(4px);
+}
+
+.botones:hover {
+  background-color: #584cc7
+}
+
+.botones:active {
+  background-color: #584cc7;
+  box-shadow: 0 4px #666;
+  transform: translateY(4px);
+}
+
+.botonesverde:hover {
+  background-color: rgb(8, 141, 48)
+}
+
+.botonesverde:active {
+  background-color: rgb(8, 141, 48);
+  box-shadow: 0 4px #666;
+  transform: translateY(4px);
+}
+
+
+
+.inputLogin {
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid blue;
+  border-radius: 4px;
+
+}
+
+.classdiv {
+  padding-top: 10px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+}
+
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  color: #6210e6;
+}
+
+.classp {
+  text-indent: 50px;
+  text-align: justify;
+  letter-spacing: 3px;
+  padding-top: 5px;
+  padding-right: 15px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 0px 0px 0px;
+}
+
+.containerComun {
+  display: flex;
+  align-items: center;
+  padding: 0px 0px 0px 0px;
+}
+
+textarea {
+  resize: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 0px 0px 0px;
+}
+
+.grid-container3 {
+  width: 70%;
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  background-color: #2196F3;
+  padding: 10px;
+
+}
+
+.grid-item {
+  background-color: rgb(8, 141, 48);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  font-size: 15px;
+  text-align: center;
+
+}
+
+.grid-item-editable {
+  background-color: rgba(255, 255, 255, 0.616);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  font-size: 15px;
+  text-align: center;
 }

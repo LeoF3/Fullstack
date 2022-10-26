@@ -13,7 +13,12 @@ const scoreSchema = new Schema({
     usuario:{type: Schema.ObjectId, ref: "user", 
 		required:true
 	}
-});
+}, { timestamps: true } ).set('toJSON',{
+    transform: (document, object) => {
+        object.id = document.id;
+        delete object._id;
+        delete object.password;
+    }});
 
 
 const Score = mongoose.model('score',scoreSchema);

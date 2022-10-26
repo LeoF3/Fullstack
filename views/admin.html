@@ -1,0 +1,202 @@
+<html>
+
+<head>
+    <h1>Administracion sudoku game</h1>
+    <link type="text/css" rel="stylesheet" href="/views/sudoku.css">
+</head>
+<form id="formulario" action="reemplazo" method="post">
+
+    <body>
+        <div id="presentacion" name="presentacion"></div>
+        <div id="general"> </div>
+        <script>
+            const armaVar = () => {
+                let paths = window.location.search;
+                paths = paths.replaceAll('%20', ' ');
+                paths = paths.split("=");
+                paths = paths[paths.length - 1];
+                const paracrea = document.createElement("p");
+                const crea = document.getElementById("presentacion");
+                const nodecrea = document.createTextNode(paths);
+                paracrea.appendChild(nodecrea);
+                crea.appendChild(paracrea);
+            }
+            const generaInputSudoku = (registro, lectura) => {
+                let item = "grid-item";
+                if (lectura) {
+                    item = "grid-item-editable";
+                }
+                const label = document.createElement("label");
+                const node = document.createTextNode("Sudoku Resuelto");
+                label.appendChild(node);
+
+                const label2 = document.createElement("label");
+                const node2 = document.createTextNode("ID Sudoku");
+                label2.appendChild(node2);
+
+                const label3 = document.createElement("label");
+                const node3 = document.createTextNode("Sudoku Activo");
+                label3.appendChild(node3);
+
+
+                const SudokuR = document.createElement("textarea");
+                SudokuR.cols = "10";
+                SudokuR.rows = "5";
+                SudokuR.value = registro.SudokuR;
+                SudokuR.id = "SudokuR";
+                SudokuR.name = "SudokuR";
+                SudokuR.readOnly = lectura;
+
+                const ISudoku = document.createElement("input");
+                ISudoku.id = "ISudoku";
+                ISudoku.name = "ISudoku";
+                ISudoku.value = registro.ISudoku;
+                ISudoku.readOnly = lectura;
+
+                const SudokuA = document.createElement("input");
+                SudokuA.id = "SudokuA";
+                SudokuA.value = registro.SudokuA;
+                SudokuA.name = "SudokuA";
+                SudokuA.readOnly = lectura;
+
+                const resu = document.getElementById("general");
+                resu.className = "grid-container3";
+                const resu2 = document.createElement("div");
+                resu2.className = item;
+                const resu3 = document.createElement("div");
+                resu3.className = item;
+                const resu4 = document.createElement("div");
+                resu4.className = item;
+
+                resu3.appendChild(label2);
+                resu3.appendChild(document.createElement("br"));
+                resu3.appendChild(ISudoku)
+                resu2.appendChild(label);
+                resu2.appendChild(document.createElement("br"));
+                resu2.appendChild(SudokuR);
+                resu4.appendChild(label3);
+                resu4.appendChild(document.createElement("br"));
+                resu4.appendChild(SudokuA);
+                resu.appendChild(resu2);
+                resu.appendChild(resu3);
+                resu.appendChild(resu4);
+            }
+
+            const RegJ = {
+                ISudoku: "Id a crear o actualizar",
+                SudokuA: false,
+                SudokuR: "Ingrese sudoku"
+            };
+            generaInputSudoku(RegJ, false);
+
+            const listar = (url) => {
+                let div = document.getElementById("general");
+                if (div !== null) {
+                    acertadas = 0;
+                    while (div.hasChildNodes()) {
+                        div.removeChild(div.lastChild);
+                    }
+                }
+                generaInputSudoku(RegJ, false);
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(element => {
+                            generaInputSudoku(element, true);
+                        });
+                    }
+                    )
+                    .catch(err => console.log('Solicitud fallida', err));
+            }
+
+            window.onload = function () {
+                cargainicial();
+            }
+
+            const Crear = () => {
+                const sudoR = document.getElementById("SudokuR").value;
+                const iSudo = document.getElementById("ISudoku").value;
+                const sudoA = document.getElementById("SudokuA").value;
+                const BodyJ = JSON.stringify({ "SudokuR": sudoR, "ISudoku": iSudo, "SudokuA": sudoA });
+                fetch('http://localhost:5000/creasudoku',
+                    {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                        body: BodyJ
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        let accion = document.getElementById("formulario").action;
+                        accion = accion.replace("reemplazo", data);
+                        document.getElementById("formulario").action = accion;
+                        document.getElementById("formulario").submit();
+                    }
+                    )
+                    .catch(err => console.log('Solicitud fallida', err));
+            }
+            const salir = () => {
+                if (confirm("Realmente quiere Salir del juego?") == true) {
+                    alert("Saliendo..");
+                    document.getElementById("formulario").action = "login";
+                    document.getElementById("formulario").submit();
+                } else {
+                    alert("Seguir administrando Sudoku Game");
+                }
+            }
+
+            const cargainicial = () => {
+                fetch('http://localhost:5000/obtienesudoku?count=true')
+                    .then(response => response.json())
+                    .then(datos => {
+                        let limite = 3;
+                        let offset = 0;
+                        let totalPaginas = Math.ceil(datos / limite);
+                        const pag = document.getElementById("paginado");
+                        for (let index = 0; index < totalPaginas; index++) {
+                            let url = 'http://localhost:5000/obtienesudoku?limit=' + limite + '&offset=' + offset;
+                            let pagnum = document.createElement("input");
+                            pagnum.type = "radio";
+                            pagnum.name = "pagina";
+
+                            let nodecont = document.createTextNode("Reg: " + (offset + 1) + "-" +
+                                (offset < (datos - limite) ? offset + limite : datos));
+                            pagnum.value = url;
+                            pag.appendChild(nodecont);
+
+                            pag.appendChild(pagnum);
+                            offset = offset + limite;
+                        }
+                    }
+                    )
+                    .catch(err => console.log('Solicitud fallida', err));
+            }
+            armaVar();
+
+            const selectDificultad = () => {
+                const radioButtons = document.querySelectorAll('input[name="pagina"]');
+                let selectedPag;
+                for (const radioButton of radioButtons) {
+                    if (radioButton.checked) {
+                        selectedPag = radioButton.value;
+                        break;
+                    }
+                }
+                selectedPag ? listar(selectedPag) : alert("No escogio pagina");
+            }
+
+        </script>
+        <div id="paginado">
+        </div>
+        <div>
+            <button type="button" class="botonesverde" name="btn" id="btn" onclick="Crear()">Crear y Actualizar
+                Sudoku</button>
+            <button type="button" class="botones" name="btn1" id="btn" onclick="selectDificultad()">Listar
+                Sudoku</button>
+            <button type="button" class="botones" name="btn2" id="btn" onclick="salir()">Salir de
+                Administracion</button>
+        </div>
+    </body>
+</form>
+</html>
